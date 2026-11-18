@@ -17,6 +17,8 @@ public class User {
     @Column(nullable = false)
     private String password; // Sera haché avec BCrypt
 
+    private String email;
+
     private String role; // "ROLE_USER" ou "ROLE_ADMIN"
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,4 +48,12 @@ public class User {
 
     public List<Task> getTasks() { return tasks; }
     public void setTasks(List<Task> tasks) { this.tasks = tasks; }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

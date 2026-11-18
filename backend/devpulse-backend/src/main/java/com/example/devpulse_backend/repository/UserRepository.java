@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Méthode magique de Spring Data JPA : cherche un utilisateur par son nom d'utilisateur
     Optional<User> findByUsername(String username);
 
+    Optional<User> findByEmail(String email);
+
     // Vérifie si un utilisateur existe déjà (utile lors de l'inscription)
     Boolean existsByUsername(String username);
 }

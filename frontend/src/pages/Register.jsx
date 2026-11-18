@@ -1,98 +1,128 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { ArrowRight, Lock, Mail, Terminal, User } from "lucide-react";
 
 export default function Register() {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
-
-    const result = await register(formData);
-    setLoading(false);
-
-    if (result.success) {
-      navigate('/login');
-    } else {
-      setError(result.message);
+    try {
+      await register({ username, email, password });
+      navigate("/login");
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Erreur lors de la création du compte."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-xl">
-        <h2 className="text-2xl font-bold text-white text-center mb-2">Créer un compte</h2>
-        <p className="text-slate-400 text-center mb-6 text-sm">Rejoins DevPulse dès aujourd'hui</p>
+    <div className="relative min-h-screen flex items-center justify-center bg-[#07080B] bg-blueprint bg-noise overflow-hidden px-4">
+      {/* Lueur Thermal Gradient */}
+      <div className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[540px] h-[320px] rounded-full bg-gradient-to-tr from-orange-500/20 via-pink-500/15 to-indigo-500/20 blur-[110px]" />
+
+      {/* Carte Fluted Glass */}
+      <div className="relative w-full max-w-md rounded-2xl border border-white/10 fluted-glass p-8 shadow-2xl">
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-mono text-orange-400 mb-4">
+            <Terminal className="w-3.5 h-3.5" />
+            <span>SYS://INIT_ACCOUNT</span>
+          </div>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-white">
+            Créer un espace
+          </h1>
+          <p className="mt-1.5 text-sm text-zinc-400">
+            Configure ton profil développeur pour accéder à DevPulse.
+          </p>
+        </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-400 p-3 rounded-lg text-sm mb-4">
-            {error}
+          <div className="mb-5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs font-mono text-rose-300">
+            [ERR] {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Nom d'utilisateur</label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
-              placeholder="Yassine"
-            />
+            <label className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+              Nom d&apos;utilisateur
+            </label>
+            <div className="relative">
+              <User className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="yassine_dev"
+                className="w-full rounded-xl border border-white/10 bg-black/50 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-orange-500/60 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition"
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
-              placeholder="nom@exemple.com"
-            />
+            <label className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+              Email
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="yassine@devpulse.io"
+                className="w-full rounded-xl border border-white/10 bg-black/50 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-orange-500/60 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition"
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Mot de passe</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
-              placeholder="••••••••"
-            />
+            <label className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+              Mot de passe
+            </label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full rounded-xl border border-white/10 bg-black/50 pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-orange-500/60 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition"
+              />
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg transition-colors disabled:opacity-50"
+            className="btn-thermal w-full mt-2 flex items-center justify-center gap-2 rounded-xl py-3 px-4 text-sm font-semibold text-white cursor-pointer disabled:opacity-50"
           >
-            {loading ? 'Inscription...' : "S'inscrire"}
+            <span>{loading ? "Initialisation..." : "Créer le compte"}</span>
+            <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <p className="text-slate-400 text-center text-sm mt-6">
-          Déjà un compte ?{' '}
-          <Link to="/login" className="text-indigo-400 hover:underline">
+        <p className="mt-6 text-center text-xs text-zinc-400">
+          Déjà enregistré ?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-orange-400 hover:text-orange-300 underline underline-offset-4"
+          >
             Se connecter
           </Link>
         </p>

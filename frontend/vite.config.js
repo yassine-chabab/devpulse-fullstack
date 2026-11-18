@@ -7,4 +7,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    port: 5173,
+   // Force Vite à échouer si le port 5173 est pris, au lieu d'en prendre un autre au hasard
+  },
 })

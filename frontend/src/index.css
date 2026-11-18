@@ -1,1 +1,52 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* #6 Blueprint Grid (Grille technique) */
+.bg-blueprint {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* #15 Dot Matrix (Matrice de points pour les cartes) */
+.bg-dot-matrix {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* #13 Noise Texture (Grain subtil anti-aspect plat) */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* #2 Fluted Glass (Verre strié / dépoli) */
+.fluted-glass {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.07) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  background-size: 12px 100%;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* #1 & #9 Thermal Grainy Gradient (Lueur thermique pour boutons/accents) */
+.btn-thermal {
+  background: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #6366f1 100%);
+  box-shadow: 0 0 25px -5px rgba(249, 115, 22, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-thermal:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 35px -3px rgba(236, 72, 153, 0.6);
+  filter: brightness(1.08);
+}
